@@ -1,0 +1,362 @@
+<div class="conteiner-fluid" style="border: #f0f0f0; width:100%  ">
+
+  <!-- TODO Remove markup  for a dev version-->
+
+  <!--todo change ng-hide  accordingly to desctop and mobile version -->
+  <!--<div class="hidden-lg hidden-md text-center">-->
+<!--  <div ng-hide="isMobileDevice">
+    <button type="button" class="btn btn-info btn-sm" ng-click="getCarPosition()">Bill</button>
+    <button type="button" class="btn btn-default btn-sm" style="border-color: #46b8da" ng-click="hideCarPosition()">
+      Fela bill
+    </button>
+  </div>-->
+  new api v.0.5
+  <p>
+
+  </p>
+
+  <div ng-hide="hidetable">
+
+    <!-- <div>
+         <tabset justified="true">
+             <tab select="redirectAkstur()">
+                 <tab-heading>Akstru</tab-heading>
+             </tab>
+             <tab select="redirectPontunar()">
+                 <tab-heading>Pontunar</tab-heading>
+             </tab>
+         </tabset>
+     </div>-->
+
+    <form class="form-inline" role="form" name="DateForm" id="DateForm" novalidate>
+      <div class="form-group">
+
+        <label class="sr-only" for="dateInput">Velja Dag</label>
+        <input class="form-control" style="color:#4E72E4;  font-weight: bold;border-color: #4E72E4" type="date"
+               id="dateInput" name="dateInput" ng-model="value" placeholder="yyyy-MM-dd" min="2014-01-01"
+               max="2120-12-12" required>
+        <!--<span class="error" ng-show="DateForm.dateInput.$error.required"> Required buttom press or CSS change!</span>-->
+        <span class="error" ng-show="DateForm.dateInput.$error.date"> Not a valid date!</span>
+
+      </div>
+      <button class="btn btn-default" style="color:#4E72E4;border-color: red" type="button"
+              ng-click=" velja() ">Velja dag
+      </button>
+
+      <!--<span class="error" ng-show="DateForm.dateInput.$dirty"> Required!</span>-->
+    </form>
+  </div>
+  <hr style="margin-top: 5px;margin-bottom: 5px;"/>
+  <!--<H1 style="color: #ff0000">Dev{{ url }}</H1>-->
+
+  <div class="row">
+    <div class="col-lg-6" ng-hide="hidetable">
+
+
+      <p></p>
+      <!--todo use animation on alert-->
+
+      <div>
+        <alert ng-repeat="alert in alerts" type="danger" close="closeAlert($index)">{{ alert.msg }}</alert>
+      </div>
+
+      <p></p>
+
+      <h3 style="color: #002EC0">Akstur í dag : {{ value }} </h3>
+      <br/>
+
+
+      <!-- <table class="table table-condensed table-bordered" style="border-color:#002EC0 ;color:#002EC0"> -->
+      <table class="table table-condensed table-bordered" style="border-color:#002EC0">
+        <div class="row">
+          <thead>
+
+          <tr>
+            <th><span class="text">Afh</span></th>
+            <th class="hidden-xs  "><span class="text"><a href="" style=" color: #002EC0"
+                                                          ng-click="predicate = 'car'; reverse=!reverse">Bill</a></span>
+            </th>
+            <!-- <th><a href="" ng-click="predicate = 'deliveryTime'; reverse=!reverse">Timin</a></th>-->
+            <th class="hidden-xs "><span class="text"><a href="" style=" color: #002EC0"
+                                                         ng-click="predicate = 'wideTime'; reverse=!reverse">Timin</a></span>
+            </th>
+            <th class="hidden-xs "><span class="text"><a href="" style=" color: #002EC0"
+                                                         ng-click="predicate = 'deliveryTime'; reverse=!reverse">Kl.</a></span>
+            </th>
+            <th><span class="text"><a href="" style=" color: #002EC0"
+                                      ng-click="predicate = 'priority'; reverse=!reverse">"!"</a></span></th>
+            <th><span class="text"><a href="" style=" color: #002EC0"
+                                      ng-click="predicate = 'street'; reverse=!reverse">Afh. st.</a></span></th>
+            <th class="hidden-xs"><span class="text">Nafn</span></th>
+            <!--<th class="hidden-xs">Efni</th>-->
+            <th class=><span class="text">Athugasemd</span></th>
+            <th class="hidden-xs"><span class="text">Tb</span></th>
+            <th class="hidden-xs"><span class="text">Út</span></th>
+            <!--<th class="hidden-xs">Akstur</th>-->
+            <!--<th class="hidden-xs"><a href="" ng-click="predicate = 'gata'; reverse=!reverse">Gata</a></th>-->
+            <!--<th class="hidden-xs"><a href="" ng-click="predicate = 'nafn'; reverse=!reverse">Nafn</a></th>-->
+            <th class="hidden-xs"><span class="text" style="width:70px"><a
+              ng-href="#/createNewTask/{{ value }}">
+                      <!--  <button ng-click="hideCarPosition()" type="button" style="width:100% "
+                                class="btn btn-primary btn-sm  hidden-xs"><span
+                                style="color: rgb(239, 255, 0)"><b style="font-size: 150%">+</b></span>
+                        </button>-->
+                        <button type="button" style="width:100% "
+                                class="btn btn-primary btn-sm  hidden-xs"><span
+                          style="color: rgb(239, 255, 0)"><b style="font-size: 150%">+</b></span>
+                        </button>
+                    </a></span></th>
+          </tr>
+          </thead>
+        </div>
+
+        <div class="row">
+          <!--this one is used when we need a list from an object returned from a Firebase-->
+          <!--<tr  class="repeat-item" ng-repeat="r in allRecords | orderByPriority | orderBy:predicate:reverse | filter:search">-->
+          <tr
+            class="repeat-item  {{ task.priority|trcolor }} {{ task.delivered|deliveredLine }} {{ task.checked|ready }}"
+            ng-repeat="task in allTasksToday |orderBy:predicate:reverse "
+
+          >
+
+            <td>
+
+              <label class="switch"> <input type="checkbox" ng-model="task.delivered"
+                                            ng-change="allTasksToday.$save(task)"
+                                            ng-true-value="YES" ng-false-value="NO"><i></i></label>
+            </td>
+            <td class="hidden-xs">
+              {{ task.car }}
+              <!--  <select ng-model="task.car" ng-change="allTasksToday.$save(task)">
+                    <option value="1">Litill</option>
+                    <option value="2">Stór</option>
+                    <option value="3">P-Bill</option>
+                    <option value="4">Kerra</option>
+                    <option value="5">V-Bill</option>
+                    <option value="6">Sott</option>
+                </select>-->
+            </td>
+            <td class="hidden-xs">
+              <!--{{ task.deliveryTime }}-->
+              {{ task.wideTime }}
+            </td>
+            <td class="hidden-xs">
+              {{ task.deliveryTime}}
+            </td>
+            <td>
+              <select ng-model="task.priority" ng-change="allTasksToday.$save(task)">
+                <option value="01">01</option>
+                <option value="02">02</option>
+                <option value="03">03</option>
+                <option value="04">04</option>
+                <option value="05">05</option>
+                <option value="06">06</option>
+                <option value="07">07</option>
+                <option value="08">08</option>
+                <option value="09">09</option>
+                <option value="10">10</option>
+                <option value="11">11</option>
+                <option value="88">12</option>
+                <option value="99">99</option>
+
+
+              </select>
+            </td>
+
+            <td>{{task.street}}</td>
+            <!--   <td>{{r.rekkan}}</td>
+               <td class="hidden-xs">{{r.gata}}
+               <td class="hidden-xs">{{ r.nafn }}</td>
+               -->
+            <td class="hidden-xs">
+              {{ task.nafn }}
+            </td>
+            <!--<td class="hidden-xs">-->
+
+            <!--{{ task.efni }}-->
+            <!--</td>-->
+            <td>
+              {{ task.fulltxt }}
+            </td>
+            <td class="hidden-xs">
+
+              <input type="checkbox" ng-model="task.checked" ng-change="allTasksToday.$save(task)"
+                     ng-true-value="YES" ng-false-value="NO"/>
+            </td>
+            <td class="hidden-xs">
+              <input type="checkbox" ng-model="task.outofhouse" ng-change="allTasksToday.$save(task)"
+                     ng-true-value="YES" ng-false-value="NO"/>
+
+            </td>
+            <!--<td class="hidden-xs">
+                {{ task.aksturT }}-->
+            <td class="hidden-xs" style="width: 70px">
+
+              <button ng-click="edit( task.$id)" class="btn btn-default "
+                      style="border-color:#4E72E4 ; color:#4E72E4  ">Skoða
+              </button>
+            </td>
+          </tr>
+        </div>
+
+      </table>
+
+
+      <div>
+        <h3 style="color: #4E72E4">Akstur næsta dag :{{ tomorrow }} </h3>
+        <table class="table table-condensed table-bordered" style="border-color:#4E72E4  ">
+
+          <div class="row">
+            <tr>
+              <th>Afh</th>
+              <th class="hidden-xs"><a style=" color: #4E72E4" href="" ng-click="predicate = 'car'; reverse=!reverse">Bill</a>
+              </th>
+              <!-- <th><a href="" ng-click="predicate = 'deliveryTime'; reverse=!reverse">Timin</a></th>-->
+              <th class="hidden-xs"><a style=" color: #4E72E4" href=""
+                                       ng-click="predicate = 'wideTime'; reverse=!reverse">Timin</a>
+              </th>
+              <th class="hidden-xs"><a style=" color: #4E72E4" href=""
+                                       ng-click="predicate = 'deliveryTime'; reverse=!reverse">Klukkan</a></th>
+              <th><a style=" color: #4E72E4" href="" ng-click="predicate = 'priority'; reverse=!reverse">"!"</a></th>
+              <th>Afh.stadur</th>
+              <th class="hidden-xs">Nafn</th>
+              <!--<th class="hidden-xs">Efni</th>-->
+              <!--<th class="hidden-xs">Athugasemd</th>-->
+              <!--TODO  show this row in a mobile wiev-->
+              <th >Athugasemd</th>
+              <th class="hidden-xs">Tilb</th>
+              <th class="hidden-xs">Út</th>
+              <!--<th class="hidden-xs">Akstur</th>-->
+              <!--<th class="hidden-xs"><a href="" ng-click="predicate = 'gata'; reverse=!reverse">Gata</a></th>-->
+              <!--<th class="hidden-xs"><a href="" ng-click="predicate = 'nafn'; reverse=!reverse">Nafn</a></th>-->
+              <th class="hidden-xs"><a ng-href="#/createNewTask/{{ tomorrow }}">
+                <!-- <button ng-click="hideCarPosition()" type="button" style="width:100% "
+                         class="btn btn-defoult btn-sm  hidden-xs"><span
+                         style="color: rgb(34, 134, 255)"><b style="font-size: 150%">+</b></span>
+                 </button>-->
+                <button type="button" style="width:100% "
+                        class="btn btn-defoult btn-sm  hidden-xs"><span
+                  style="color: rgb(34, 134, 255)"><b style="font-size: 150%">+</b></span>
+                </button>
+              </a></th>
+            </tr>
+          </div>
+
+
+          <div class="row">
+            <!--this one is used when we need a list from an object returned from a Firebase-->
+            <!--<tr  class="repeat-item" ng-repeat="r in allRecords | orderByPriority | orderBy:predicate:reverse | filter:search">-->
+            <!--if we put class properties without whitespace it concatenate next variable to it -->
+            <tr
+              class="repeat-item  {{ task.priority|trcolor }} {{ task.checked|ready }} {{ task.delivered|deliveredLine }}"
+              ng-repeat="task in allTasksTomorrow |orderBy:predicate:reverse "
+
+            >
+
+              <td>
+
+
+                <label class="switch"> <input type="checkbox" ng-model="task.delivered"
+                                              ng-change="allTasksTomorrow.$save(task)"
+                                              ng-true-value="YES" ng-false-value="NO"><i></i></label>
+
+              </td>
+              <td class="hidden-xs">
+                {{ task.car }}
+                <!--    <select ng-model="task.car" ng-change="allTasksToday.$save(task)">
+                        <option value="1">Litill</option>
+                        <option value="2">Stór</option>
+                        <option value="3">P-Bill</option>
+                        <option value="4">Kerra</option>
+                        <option value="5">V-Bill</option>
+                        <option value="6">Sott</option>
+                    </select>-->
+              </td>
+              <td class="hidden-xs">
+                <!--{{ task.deliveryTime }}-->
+                {{ task.wideTime }}
+              </td>
+              <td class="hidden-xs">
+                {{ task.deliveryTime}}
+              </td>
+              <td>
+                <select ng-model="task.priority" ng-change="allTasksTomorrow.$save(task)">
+                  <option value="01">01</option>
+                  <option value="02">02</option>
+                  <option value="03">03</option>
+                  <option value="04">04</option>
+                  <option value="05">05</option>
+                  <option value="06">06</option>
+                  <option value="07">07</option>
+                  <option value="08">08</option>
+                  <option value="09">09</option>
+                  <option value="10">10</option>
+                  <option value="11">11</option>
+                  <option value="12">12</option>
+                  <option value="99">99</option>
+
+
+                </select>
+              </td>
+
+              <td>{{task.street}}</td>
+              <!--   <td>{{r.rekkan}}</td>
+                 <td class="hidden-xs">{{r.gata}}
+                 <td class="hidden-xs">{{ r.nafn }}</td>
+                 -->
+              <td class="hidden-xs">
+                {{ task.nafn }}
+              </td>
+              <!--<td class="hidden-xs">-->
+
+              <!--{{ task.efni }}-->
+              <!--</td>-->
+              <td >
+                {{ task.fulltxt }}
+              </td>
+              <td class="hidden-xs">
+
+                <input type="checkbox" ng-model="task.checked" ng-change="allTasksTomorrow.$save(task)"
+                       ng-true-value="YES" ng-false-value="NO"/>
+              </td>
+              <td class="hidden-xs">
+                <input type="checkbox" ng-model="task.outofhouse" ng-change="allTasksTomorrow.$save(task)"
+                       ng-true-value="YES" ng-false-value="NO"/>
+
+              </td>
+              <td class="hidden-xs" style="width: 70px">
+
+                <button ng-click="editTomorrow( task.$id)" class="btn btn-default "
+                        style="border-color:#4E72E4 ; color:#4E72E4  ">Skoða
+                </button>
+              </td>
+            </tr>
+          </div>
+
+
+        </table>
+      </div>
+
+
+    </div>
+    <div class="col-lg-6" style="position: fixed;
+  left: 50%;">
+      <div id="map" style="margin-left: 10px;margin-right: 10px">
+
+        The map is here
+      </div>
+
+    </div>
+
+  </div>
+  <div>
+    <br/>
+
+    <p class="text-center">Þú ert skráður sem : &nbsp;{{ user }} &nbsp;
+      <button class="btn btn-default" style="border-color: #001e7e; color:#001e7e " ng-click="logout()">Skrá út
+      </button>
+    </p>
+  </div>
+
+
+</div>

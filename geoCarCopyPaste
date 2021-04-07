@@ -1,0 +1,43 @@
+  $scope.getCarPosition = function carPositionTest() {
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(displayAndWatch, failGeoData);
+          var carImg = 'images/pickup.png';
+
+          function displayAndWatch(position1) {
+            console.log('Checking your position...');
+            //todo move up otherwise map resized every time new coordinates are received :)
+            $scope.map.setZoom(16);
+            //TO DO DEFINE INIT POSITION SEE THIS LINK https://www.codeofaninja.com/2013/08/navigator-geolocation-watchposition.html
+            carMarker = new google.maps.Marker({
+              // id: info.$id,
+              map: $scope.map,
+              position: new google.maps.LatLng(position1.coords.latitude, position1.coords.longitude),
+              // title: info.street,
+              icon: carImg
+
+            });
+          }
+
+          watchID = navigator.geolocation.watchPosition(successGeoData, failGeoData, {
+            maximumAge: 1000,
+            enableHighAccuracy: true,
+            timeout: 5000
+          });
+
+        } else {
+          alert("enable geolocation");
+        }
+        $scope.hidetable = true; //TODO change html for a mainview
+      };
+
+
+          $scope.hideCarPosition = function () {
+              if (watchID > 0) {
+                navigator.geolocation.clearWatch(watchID);
+                carMarker.setMap(null);
+                //   alert("Stopped Tracking Location");
+                console.log("hideCarPos");
+              }
+              $scope.map.setZoom(11);
+              $scope.hidetable = false;
+            };

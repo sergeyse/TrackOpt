@@ -1,0 +1,134 @@
+<div class="row">
+    <div class="col-xs-12 col-md-12 col-lg-6">
+
+        <div class="panel panel-info ">
+            <div class=" panel-heading">
+                <h3 class="panel-title">Akstur <b>{{ forDay }}</b></h3>
+            </div>
+            <div class="panel-body">
+                <div>
+                    <label class=" control-label" style="float: left">Skráð : &nbsp;<span style="color: #3276b1">{{ editTask.creationTime }} </span>
+                        Notandi : &nbsp;</label>
+
+                    <div>
+                        <p><span style="color: #3276b1">{{editTask.usermail }}</span></p>
+                    </div>
+                    <!--TODO use ng-nide when there is NO modification of a task-->
+                    <div><b>Breytt: &nbsp;</b>{{ editTask.taskModified }}&nbsp;<b>Notandi: &nbsp;</b> {{
+                        editTask.modifEmail }}
+                    </div>
+                </div>
+                <div>
+                    <form novalidate name="Akstur">
+                        <hr/>
+
+                        <p></p>
+                        Aksturs timi:
+
+                        <div class="btn-group" style="margin-left: 60px">
+                            <label class="btn btn-default"
+                                   style="color:#4E72E4; font-weight: bold;border-color: #4E72E4"
+                                   ng-model="editTask.wideTime" btn-radio="'Fyrir hádegi'">Fyrir hádegi</label>
+                            <label class="btn btn-default"
+                                   style="color:#4E72E4; font-weight: bold;border-color: #4E72E4"
+                                   ng-model="editTask.wideTime" btn-radio="'idag'">&nbsp;Í dag &nbsp;</label>
+                            <label class="btn btn-default"
+                                   style="color:#4E72E4; font-weight: bold;border-color: #4E72E4"
+                                   ng-model="editTask.wideTime" btn-radio="'Eftir hádegi'">Eftir hádegi</label>
+                        </div>
+                        <p/>
+
+
+                        Viðtökustaður :
+                        <input style="color:#4E72E4; font-weight: bold;border-color: #4E72E4" id="Gata" name="aGata"
+                               class="form-control"
+                               placeholder="Skra heimilisfang " ng-model="editTask.street"
+                               tooltip="ATH.Til að breyta staðsetningar-MERKI Á KORTINU  þarf að EYÐA þessum akstri og SKRÁ NYJAN."
+                               tooltip-trigger="focus" tooltip-placement="bottom" required>
+                        <br/>
+
+                        Afhending :
+                        <select style="color:#4E72E4; font-weight: bold;border-color: #4E72E4" class="form-control"
+                                ng-model="editTask.car" required>
+
+                            <option>Litill</option>
+                            <option>Stór</option>
+                            <option>P-Bill</option>
+                            <option>Kerra</option>
+                            <option>V-Bill</option>
+                            <option>Sott</option>
+                        </select>
+
+
+                        <!-----------------END select type akstur -->
+                        <p/>
+                        Klukkan:
+                        <select style="color:#4E72E4; font-weight: bold;border-color: #4E72E4" class="form-control"
+                                ng-model="editTask.deliveryTime" required>
+                            <option value=" " >ó ákveðin</option>
+                            <option>08-09</option>
+                            <option>09-10</option>
+                            <option>10-11</option>
+                            <option>11-12</option>
+                            <option>13-14</option>
+                            <option>14-15</option>
+                            <option>15-16</option>
+                            <option>16-17</option>
+                            <!--<option>12:30</option>
+                            <option>13:00</option>
+                            <option>13:30</option>
+                            <option>12:00</option>
+                            <option>14:00</option>
+                            <option>14:30</option>
+                            <option>15:00</option>
+                            <option>15:30</option>
+                            <option>16:00</option>
+                            <option>16:30</option>
+                            <option>17:00</option>
+-->
+                        </select>
+
+
+                        <p/>
+                        Nafn:
+                        <input class="form-control" style="color:#4E72E4; font-weight: bold;border-color: #4E72E4"
+                               type="text"
+                               ng-model="editTask.nafn" name="aNafn" required/>
+                        <br/>
+                        ATH:
+                        <textarea class="form-control" style="color:#4E72E4; font-weight: bold;border-color: #4E72E4"
+                                  rows="3"
+                                  ng-model="editTask.fulltxt"></textarea>
+                        <br/>
+
+                        Dagsetning:
+                        <input class="form-control" style="color:#4E72E4; font-weight: bold;border-color: #4E72E4"
+                               type="date"
+                               ng-model="forDay">
+                        <br/>
+
+                        <div>
+            <span ng-hide="Akstur.$pristine" class=" alert-danger alert-main  " role="alert"><h2 class="text-center">
+                ATH BREYTINGAR!</h2> </span>
+                        </div>
+                        <button ng-disabled="Akstur.$invalid || Akstur.$pristine " class="form-control"
+                                style=" color: #ffffff; background-color: #2286ff ; font-weight: bold;border-color: #4E72E4"
+                                ng-click="taskRec()">Skrá (vinsamlegast fyllið allt út) og farið i {{ backToday }}
+                        </button>
+                        <p></p>
+                        <a ng-href="#/mainView/">
+                            <button type="button" class="btn btn-warning btn-lg btn-block">
+                                Til baka i daginn i dag {{ backToday }}
+                            </button>
+                        </a>
+
+                        <p></p>
+                        <button ng-click="delTask()" class="btn btn-danger btn-lg btn-block">Eyða</button>
+
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
